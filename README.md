@@ -20,23 +20,23 @@ df = pd.read_csv(file_path)
 
 data = df["Sales_Volume"].values
 
-# Define lags
+#### Define lags
 lags = range(35)
 
 
-# Pre-allocate autocorrelation table
+#### Pre-allocate autocorrelation table
 acf_values = []
 
-# Mean
+#### Mean
 mean_val = np.mean(data)
 
-# Variance
+#### Variance
 var_val = np.var(data)
 
-# Normalized data
+#### Normalized data
 normalized_data = data - mean_val
 
-# Go through lag components one-by-one
+#### Go through lag components one-by-one
 for lag in lags:
     if lag == 0:
         acf = 1  # Autocorrelation at lag 0 is always 1
@@ -46,7 +46,7 @@ for lag in lags:
         acf = num / den
     acf_values.append(acf)
 
-# display the graph
+#### display the graph
 plt.figure(figsize=(10, 6))
 plt.stem(lags, acf_values, basefmt=" ")
 plt.xlabel("Lag")
