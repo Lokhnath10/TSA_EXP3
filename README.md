@@ -15,29 +15,49 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-data = [3, 16, 156, 47, 246, 176, 233, 140, 130,
-101, 166, 201, 200, 116, 118, 247,
-209, 52, 153, 232, 128, 27, 192, 168, 208,
-187, 228, 86, 30, 151, 18, 254,
-76, 112, 67, 244, 179, 150, 89, 49, 83, 147, 90,
-33, 6, 158, 80, 35, 186, 127]
+file_path = "/content/BMW_Car_Sales_Classification.csv"  # update path if needed
+df = pd.read_csv(file_path)
 
+data = df["Sales_Volume"].values
+
+# Define lags
 lags = range(35)
 
 
-#Pre-allocate autocorrelation table
+# Pre-allocate autocorrelation table
+acf_values = []
 
-#Mean
+# Mean
+mean_val = np.mean(data)
 
-#Variance
+# Variance
+var_val = np.var(data)
 
-#Normalized data
+# Normalized data
+normalized_data = data - mean_val
 
-#Go through lag components one-by-one
+# Go through lag components one-by-one
+for lag in lags:
+    if lag == 0:
+        acf = 1  # Autocorrelation at lag 0 is always 1
+    else:
+        num = np.sum(normalized_data[:-lag] * normalized_data[lag:])
+        den = np.sum(normalized_data ** 2)
+        acf = num / den
+    acf_values.append(acf)
 
-#display the graph
+# display the graph
+plt.figure(figsize=(10, 6))
+plt.stem(lags, acf_values, basefmt=" ")
+plt.xlabel("Lag")
+plt.ylabel("Autocorrelation")
+plt.title("Autocorrelation Function (Sales_Volume)")
+plt.grid(True)
+plt.show()
+
 
 ### OUTPUT:
+<img width="860" height="553" alt="image" src="https://github.com/user-attachments/assets/f16a236e-d965-4ac1-9e67-9a38d5920a8d" />
 
 ### RESULT:
         Thus we have successfully implemented the auto correlation function in python.
